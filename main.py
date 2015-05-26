@@ -1,5 +1,5 @@
 from tkinter import *
-from urllib import request
+import urllib.request
 import random
 
 
@@ -18,22 +18,27 @@ class MainWindow:
         entry_widget["width"] = 50
         entry_widget.pack(side=LEFT)
 
+        # Get the text value of the entry
+        text_value = entry_widget.get()
+
         text_frame.pack()
 
-        button_save_url = Button(frame, text="Make image", command= lambda: self.download_file_from_url(entry_widget))
+        button_save_url = Button(frame, text="Make image", command=lambda: self.download_file_from_url(text_value))
         button_save_url.pack()
 
     def download_file_from_url(self, input_url):
+        if not input_url:
+            return
+
+        print("test")
+
         r = random.randrange(1,100)
-        img_response = request.urlopen(input_url).read()
-        image_file = open("image" + str(r) + ".jpg", "w")
-        print(image_file.name)
+        file_name = "image" + str(r) + ".jpg"
+
         try:
-            image_file.write(img_response)
+            urllib.request.urlretrieve(input_url, file_name)
         except Exception:
             print("Cant create an image from the given url")
-        finally:
-            image_file.close()
 
 
 root = Tk()
